@@ -1,0 +1,36 @@
+@model IEnumerable<GSULibrary.Models.GSUBook>
+@{
+    ViewData["Title"] = "Books";
+}
+
+<h2>Book List</h2>
+<p><a asp-controller="Book" asp-action="Add" class="btn btn-primary">Add New Book</a></p>
+
+<table class="table table-striped">
+    <thead>
+        <tr>
+            <th>Name</th>
+            <th>Author</th>
+            <th>ISBN</th>
+            <th>Price</th>
+            <th>Copies</th>
+            <th></th>
+        </tr>
+    </thead>
+    <tbody>
+        @foreach (var book in Model)
+        {
+            <tr>
+                <td>@book.Name</td>
+                <td>@book.Author</td>
+                <td>@book.ISBN</td>
+                <td>@book.Price.ToString("C")</td>
+                <td>@book.NumberOfCopy</td>
+                <td>
+                    <a asp-controller="Book" asp-action="Edit" asp-route-id="@book.GSUBookId" class="btn btn-sm btn-warning">Edit</a>
+                    <a asp-controller="Book" asp-action="Delete" asp-route-id="@book.GSUBookId" class="btn btn-sm btn-danger">Delete</a>
+                </td>
+            </tr>
+        }
+    </tbody>
+</table>
