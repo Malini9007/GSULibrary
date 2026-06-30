@@ -3,33 +3,36 @@ using Microsoft.EntityFrameworkCore;
 
 var builder = WebApplication.CreateBuilder(args);
 
-// Add services to the container.
+// Add MVC services
 builder.Services.AddControllersWithViews();
 
+// Add DbContext (SQLite)
 builder.Services.AddDbContext<GSUBookContext>(options =>
-    options.UseSqlite(builder.Configuration.GetConnectionString("GSUBookContext")));
+    options.UseSqlite(
+        builder.Configuration.GetConnectionString("GSUBookContext")
+    )
+);
 
 var app = builder.Build();
 
-// Configure the HTTP request pipeline.
+// Configure HTTP request pipeline
 if (!app.Environment.IsDevelopment())
 {
     app.UseExceptionHandler("/Home/Error");
-    // The default HSTS value is 30 days. You may want to change this for production scenarios, see https://aka.ms/aspnetcore-hsts.
     app.UseHsts();
 }
 
 app.UseHttpsRedirection();
+app.UseStaticFiles();
+
 app.UseRouting();
 
 app.UseAuthorization();
 
-app.MapStaticAssets();
-
+// Default route
 app.MapControllerRoute(
     name: "default",
-    pattern: "{controller}/{action}/{id?}")
-    .WithStaticAssets();
-
+    pattern: "{controller=Home}/{action=Index}/{id?}"
+);
 
 app.Run();
